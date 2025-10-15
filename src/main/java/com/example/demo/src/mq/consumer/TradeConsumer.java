@@ -15,10 +15,10 @@ public class TradeConsumer {
     private final TradeEventZeroGcCodec.TradeEventView view = new TradeEventZeroGcCodec.TradeEventView();
 
     @KafkaListener(
-            topics = "trades",
-            groupId = "demo-group",
-            concurrency = "1",
-            containerFactory = "bytesManualAckListenerContainerFactory"
+        topics = "trades",
+        groupId = "demo-group",
+        concurrency = "1",
+        containerFactory = "bytesManualAckListenerContainerFactory"
     )
     public void onMsg(ConsumerRecord<String, byte[]> rec, Acknowledgment ack) {
         byte[] v = rec.value();
