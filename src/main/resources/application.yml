@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: demo
+  task:
+    scheduling:
+      pool:
+        size: 4   # ??????
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    client-id: demo-client
+
+    producer:
+      acks: all
+      compression-type: zstd
+      linger-ms: 2
+      batch-size: 65536
+      enable-idempotence: true
+      retries: 3
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+
+    consumer:
+      fetch-max-wait: 100      # ???? 100ms ????? 500?
+      max-poll-records: 200    # ????? 200 ?
+      properties:
+        max.poll.interval.ms: 300000
+        heartbeat.interval.ms: 3000
+        session.timeout.ms: 45000
+      group-id: demo-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+
+    listener:
+      ack-mode: manual_immediate
+
+    properties:
+      security.protocol: PLAINTEXT
+
+app:
+  cron:
+    produce-trades: "*/1 * * * * *"   # ? 5 ?????6 ??????
+    tz: "Asia/Taipei"
+
+logging:
+  level:
+    org.apache.kafka.clients.consumer.KafkaConsumer: DEBUG
